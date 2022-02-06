@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Setting up the Snowplow tracker script -->
+    <script text="text/javascript" async=1>
+        ; (function (p, l, o, w, i, n, g) {
+            if (!p[i]) {
+                p.GlobalSnowplowNamespace = p.GlobalSnowplowNamespace || []; p.GlobalSnowplowNamespace.push(i);
+                p[i] = function () { (p[i].q = p[i].q || []).push(arguments) };
+                p[i].q = p[i].q || [];
+                n = l.createElement(o);
+                g = l.getElementsByTagName(o)[0];
+                n.async = 1;
+                n.src = w;
+                g.parentNode.insertBefore(n, g);
+            }
+        }(window, document, "script", "http://localhost:80/site/javascript/snowplow.js", "snowplow"));
+        //You might need to change the line above to use your local host path to the snowplow.js file.
+        window.snowplow('newTracker', 'demosp', 'http://localhost:9090', {
+            //You might need to change this to your Snowplow Micro port.
+            appId: 'simple-demo-site-tracker'
+        });
+
+        snowplow('enableActivityTracking', {
+            minimumVisitLength: 30,
+            heartbeatDelay: 10
+        });
+        snowplow('trackPageView');
+    </script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js">
+    <!-- Local Styles -->
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+
+<body>
+    <div class="container h-100">
+        <div class="row align-items-center h-100">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <p class="font-weight-normal" id="welcome-message">Hello Visitor</p>
+                <p class="font-weight-normal" id="explainer">here are some insights using the
+                    tracker on this webpage:
+                </p>
+                <div class="events-summary">
+                    <div class="row" id="total-events">NULL</div>
+                    <div class="row" id="good-events">NULL</div>
+                    <div class="row" id="bad-events">NULL</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //The below request will depend on your Micro container port.
+        $.get("http://localhost:9090/micro/all", (data) => {
+            $("#total-events").html(data["total"]);
+            $("#good-events").html(data["good"]);
+            $("#bad-events").html(data["bad"]);
+
+        });
+    </script>
+</body>
+
+
+</html>

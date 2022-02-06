@@ -1,0 +1,36 @@
+html, body {
+    height: 100% !important;
+    font-weight: 300;
+
+}
+
+#welcome-message {
+    font-size: 3em;
+}
+
+#explainer {
+    font-size: 2em;
+}
+
+#total-events::before {
+    content: "Total Events Captured: ";
+}
+
+#good-events::before {
+    color: rgb(0, 255, 0);
+    content: "Good Events Captured: ";
+}
+
+#bad-events::before {
+    color: rgb(255, 0, 0);
+    content: "Bad Events Captured: ";
+}
+
+.events-summary :before {
+    font-weight: 300;
+}
+
+.events-summary div {
+    font-size: 1.5em;
+    font-weight: 400;
+}
